@@ -63,7 +63,7 @@ Object.defineProperty(juan,'prueba_Nasa',{
     configurable:false
 });
 
-//========================
+
 //hay otras 2 propiedades que son object.freeze y object.seal, el problema de utilizar estos metodos es que no se puede quitar, y lo que se debe hacer
 //es hacer una 'copia' del objeto para poder manipularlo
 //el object.seal(objeto) convierte todas las propiedades del objeto en false (enumerable, writable, configurable)
@@ -72,7 +72,8 @@ Object.defineProperty(juan,'prueba_Nasa',{
 //Object.freeze(juan);
 //========================
 
-
+//==========================
+//==========================
 // Funcionamiento de la memoria en Java Script
 //Las variables se guardan en dos tipos de memorias, que son STACk y HEAP
 //STACK: es un tipo de memoria que es limitada y solo guarda las variables normales (int,bool,string,array)
@@ -93,8 +94,6 @@ console.log(person2)
 //en el caso anterior explica sobre lo anterior explicado, lo que sucede es que cuando intenamos hacer 'copia de person' lo que realmente está pasando es que
 //se esta copiando el apuntador en donde se guarda el objeto de la memoria HEAP, por lo que cuando se intentan modificar, agregar o borrar propiedades de person o person2,
 //lo que ocurre es que se estan cambiando al mismo objeto, porque 'person2' SOLO esta copiando el apuntador, PERO no creando un nuevo.
-
-//==========================
 
 //SHALLOW COPY o copia superficial, puede hacer copias de objetos a primer nivel o con poca profundidad, PERO si tiene objetos anidados, sucede el problema de que solo
 //se copian los apuntadores de memoria y no se pueden clonar.
@@ -131,3 +130,41 @@ console.log(student_3);
 //PERO sigue teniendo el mismo problema en que no funciona en los objetos anidados
 const student_4 = Object.create(student);
 console.log(student_4);
+
+
+//===============================================
+//para poder hacer una copia profunda se debe utilizar JSON.stringify(objeto) y luego JSON.parse(objeto).
+//el problema a esto es que solo funciona con propiedades y no con metodos/funciones ya que son omitidas.
+
+//este metodo primero pasa el objeto a string
+const objeto_a_string=JSON.stringify(student);
+
+//después volverlo hacer objeto
+const nuevo_objeto=JSON.parse(objeto_a_string);
+
+
+//=================================================
+//Recursividad
+//Es cuando se llama a si mismo una funcion, y para detenerlo necesita tener un return fijo o de lo contrario se cicla el navegador y arroja error o deja de funcionar
+
+//recursividad por medio de un ciclo FOR
+const lista=[0,1,2,3,4,5,6,77,8,9,10,11];
+let numero = 0;
+
+for (let index = 0; index<lista.length; index++){
+    numero = lista[index];
+    //console.log({index, numero});
+}
+
+
+function recursiva(vector){
+    if (vector.length != 0){
+        const firstnum = vector[0];
+        console.log(firstnum);
+        //aqui eliminamos el primer elemento del array y despues lo llamamos nuevamente la funcion con el array editado previamente.
+        vector.shift();
+        recursiva(vector);
+    }
+}
+
+recursiva(lista)
