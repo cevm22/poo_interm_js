@@ -249,3 +249,48 @@ const  basic_student={
 const sofia = deepcopy(basic_student);
 //aqui sellamos el objeto para que ninguna propiedad se pueda eliminar, PERO si se pueda modificar
 Object.seal(sofia)
+
+//Con los siguientes metodos verificamos si un objeto esta Seal o Freeze, en caso de serlo, retorna TRUE
+Object.isSealed(sofia)
+Object.isFrozen(sofia)
+
+
+//===================================================
+//Factory Pattern and RORO with functions
+
+//con esta funcion arrojamos un error en el navegador diciendo que hace falta un parametro
+function required_param(param){
+    throw new Error(param + " es obligatorio ")
+}
+
+function create_student({
+    //en caso de faltar name, age o email, invoca la funcion en donde creamos un error y decimos que hace falta un parametro
+    name = required_param('name'),
+    age = required_param('age'),
+    email = required_param('email'),
+    instagram,
+    twitter,
+    facebook,
+    //aqui asignamos por defecto en caso de no recibir valores 
+    approved_Courses = [],
+    learning_paths = [],
+
+//con la asignacion de un objeto vacío es para evitar errores en el navegador cuando no se envía nada.    
+} = {} ) {
+
+    return{
+        name,
+        email,
+        age,
+        approved_Courses,
+        learning_paths,
+        social_media:{
+            instagram,
+            facebook,
+            twitter
+        },
+    };
+};
+
+const ana=create_student({age:28,name:'ana', email:'ana@testing.com'});
+Object.seal(ana)
