@@ -106,6 +106,9 @@ const student = {
         puntos:123,
         basico: ['java script'],
         intermedio: ['html','css']
+    },
+    edit_name(){
+        this.name = 'Cambiar nombre dentro del metodo'
     }
 }
 
@@ -167,4 +170,60 @@ function recursiva(vector){
     }
 }
 
-recursiva(lista)
+//recursiva(lista)
+
+//===============================================
+//Copiar objetos completos con objetos anidados
+
+function verificar_array(subject){
+    return Array.isArray(subject);
+}
+
+function verificar_objeto(subject){
+    return typeof subject=='object';
+}
+
+
+function deepcopy(subject){
+    let copysubject;
+    //verificar si es un array o un objeto
+    const subject_array=verificar_array(subject);
+    const subject_object=verificar_objeto(subject);
+
+    //aquí se hacen las verificaciones previamente al loop de copiar 
+    if (subject_array){
+        //en caso de ser array, se le asigna un array vacío
+        copysubject=[];
+    } else if(subject_object){
+        //en caso de ser objecto, se le asigna un objeto vacío
+        copysubject={};
+    }else{
+        //en caso de ser otro tipo de objeto o metodo, lo devolvemos tal cual
+        return subject;
+    }
+
+    //loop de copiado
+    for (key in subject){
+        //verificamos y asignamos en caso de que sea un objeto
+        const key_is_subject=verificar_objeto(subject[key]);
+
+        //validar que sea objeto
+        if(key_is_subject){
+            //en caso de ser objeto anidado, volvemos a llamar la misma funcion deepcopy haciendolo recursivo
+            copysubject[key]=deepcopy(subject[key]);
+        }else{
+            //en caso de ser array, empujamos el valor en el array vacío previamente llenado
+            if(subject_array){
+                copysubject.push(subject[key]);
+            }else{
+                //en caso de ser otro tipo de objeto o metodo, le asignamos tal cual se encuentra
+                copysubject[key]=subject[key];
+            }
+        }
+        
+    } 
+    //aqui se retorna el objeto copiado
+    return copysubject;
+}
+
+console.log('deep copy')
