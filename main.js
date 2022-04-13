@@ -227,3 +227,25 @@ function deepcopy(subject){
 }
 
 console.log('deep copy')
+
+
+//crear abstraccion sin uso de prototipos o clases. Utilizando Deepcopy que se hizo previamente
+
+//se hace un molde base con todos los elementos undefined
+const  basic_student={
+    name: undefined,
+    email: undefined,
+    age: undefined,
+    approved_Courses: undefined,
+    learning_paths: undefined,
+    social_media:{
+        twitter:undefined,
+        facebook:undefined,
+        instagram:undefined,
+    },
+};
+
+//creamos un objeto llamado sofia, utilizando deepcopy para asignarle el objeto vacio de basic_student
+const sofia = deepcopy(basic_student);
+//aqui sellamos el objeto para que ninguna propiedad se pueda eliminar, PERO si se pueda modificar
+Object.seal(sofia)
