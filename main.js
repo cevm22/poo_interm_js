@@ -278,7 +278,12 @@ function create_student({
 //con la asignacion de un objeto vacío es para evitar errores en el navegador cuando no se envía nada.    
 } = {} ) {
 
-    return{
+    const private = {
+        // Por convención se utiliza guión bajo para las variables privadas
+        "_name": name
+    };
+
+    const public = {
         name,
         email,
         age,
@@ -289,7 +294,25 @@ function create_student({
             facebook,
             twitter
         },
+        read_name(){
+            return private["_name"]
+        },
+        change_name(new_name){
+            private["_name"] = new_name;
+        }
     };
+
+    Object.defineProperty(public,"read_name",{
+        configurable: false,
+        writable: false
+    }),
+
+    Object.defineProperty(public,"change_name",{
+        configurable: false,
+        writable: false
+    })
+
+    return public
 };
 
 const ana=create_student({age:28,name:'ana', email:'ana@testing.com'});
