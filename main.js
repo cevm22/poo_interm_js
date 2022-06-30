@@ -333,4 +333,118 @@ function create_student({
 };
 
 const ana=create_student({age:28,name:'ana', email:'ana@testing.com'});
-Object.seal(ana)
+//Object.seal(ana)
+
+
+function create_learning_path({
+    name = required_param("name"),
+    courses = []
+
+})  {
+    const private = {
+        "_name" : name,
+        "_courses" : courses,
+
+    }
+    const public = {
+        get name(){
+            return private["_name"]
+        },
+
+        set name(new_name){
+            //Validacion para no admitir strings vacios
+            if(new_name.length > 0){
+                private["_name"] = new_name
+            }else{
+                console.warn("No se admiten nombres vacios para los LEARNING PATHS")
+            }
+            
+        },
+        get courses(){
+            return private["_courses"]
+        }
+
+
+    }
+
+    return public
+}
+
+function create_student_lp({
+    name = required_param('name'),
+    age = required_param('age'),
+    email = required_param('email'),
+    instagram,
+    twitter,
+    facebook,
+    approved_Courses = [],
+    learning_paths = [],
+
+//con la asignacion de un objeto vacío es para evitar errores en el navegador cuando no se envía nada.    
+} = {} ) {
+
+    const private = {
+        "_name": name,
+        "_learning_paths" : learning_paths
+    };
+
+    const public = {
+        name,
+        email,
+        age,
+        approved_Courses,
+//        learning_paths,
+        social_media:{
+            instagram,
+            facebook,
+            twitter
+        },
+
+        get name(){
+            return private["_name"]
+        },
+
+        set name(new_name){
+            //Validacion para no admitir strings vacios
+            if(new_name.length > 0){
+                private["_name"] = new_name
+            }else{
+                console.warn("No se admiten nombres vacios")
+            }
+            
+        },
+
+        get learning_paths(){
+            return private["_learning_paths"]
+        },
+
+            //Aplicando Duck Typing, que es hacer validaciones para asegurarnos que se trata de un nombre para un Learning Path
+        set learning_paths(new_name_lp){
+
+            if(!new_name_lp.name){
+                console.warn("tu LP no tiene la propiedad = nombre")
+                return
+            }
+
+            if(!new_name_lp.courses){
+                console.warn("tu LP no tiene la propiedad = courses")
+                return
+            }
+            if(!Array.isArray(new_name_lp.courses)){
+                console.warn("tu LP no es una lista")
+                return
+            }else{
+                private["_learning_paths"].push(new_name_lp)
+                return
+            }
+            
+            
+        }
+    };
+
+
+
+    return public
+};
+
+const cris=create_student_lp({age:29,name:'cris', email:'cris@testing.com'});
