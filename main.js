@@ -294,11 +294,28 @@ function create_student({
             facebook,
             twitter
         },
-        read_name(){
+        // read_name(){
+        //     return private["_name"]
+        // },
+        // change_name(new_name){
+        //     private["_name"] = new_name;
+        // }
+
+        // ahora hacerlo con GET y SET los atributos anteriores read_name y change_name
+        // Con Getters y Setters se tiene más control sobre el encapsulamiento, pero pueden modificarse estos atributos con object.defineProperty,
+        // haciendo imposible volverlo a modificar o volver acceder al get o set asignado a esa pripiedad
+        get name(){
             return private["_name"]
         },
-        change_name(new_name){
-            private["_name"] = new_name;
+
+        set name(new_name){
+            //Validacion para no admitir strings vacios
+            if(new_name.length > 0){
+                private["_name"] = new_name
+            }else{
+                console.warn("No se admiten nombres vacios")
+            }
+            
         }
     };
 
@@ -306,7 +323,7 @@ function create_student({
         configurable: false,
         writable: false
     }),
-
+    
     Object.defineProperty(public,"change_name",{
         configurable: false,
         writable: false
