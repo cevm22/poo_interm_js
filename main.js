@@ -448,3 +448,71 @@ function create_student_lp({
 };
 
 const cris=create_student_lp({age:29,name:'cris', email:'cris@testing.com'});
+
+//crear prototipos para después hacer validaciones de instancias
+
+function Learning_Paths({
+    name = required_param("name"),
+    courses = []
+
+})  {
+
+    this.name = name;
+    this.courses = courses
+
+}
+
+function Student_lp({
+    name = required_param('name'),
+    age = required_param('age'),
+    email = required_param('email'),
+    instagram,
+    twitter,
+    facebook,
+    approved_Courses = [],
+    learning_paths = [],
+
+//con la asignacion de un objeto vacío es para evitar errores en el navegador cuando no se envía nada.    
+} = {} ) {
+
+    this.name = name;
+    this.email = email;
+    this.age = age;
+    this.learning_paths = [];//learning_paths;
+    this.approved_Courses = approved_Courses;
+    this.social_media = {
+        twitter,
+        instagram,
+        facebook
+    };
+
+    if (!Array.isArray(learning_paths)){
+        console.warn("learningPath is not an array")
+        return;
+    }
+
+    //Aquí se utiliza FOR... OF... que el "value" es el valor del array y NO es el INDEX donde se encuentra almacenado el valor.
+    for(let value of learning_paths){
+
+        if (value instanceof Learning_Paths){
+            this.learning_paths.push(value);
+        }
+    }
+}
+
+//Creamos una instancia con Learning_Paths, para despues validarlo que realmente es un verdadero Learning_Paths y no una alteracion 
+const datascience = new Learning_Paths({name: "data science"})
+const escuela_web = new Learning_Paths({name: "WEB"})
+
+const andres= new Student_lp({
+    age:25,
+    name:'andres', 
+    email:'andres@testing.com',
+    learning_paths: [
+        datascience,
+        escuela_web,
+        {name:"testing for filter",courses:[]}
+        
+    ]
+});
+
