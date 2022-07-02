@@ -516,3 +516,64 @@ const andres= new Student_lp({
     ]
 });
 
+
+//Hacer una clase protegiendo learningpaths
+
+class Estudiante {
+    #learning_paths = []
+    constructor({
+        name = required_param('name'),
+        age = required_param('age'),
+        email = required_param('email'),
+        instagram,
+        twitter,
+        facebook,
+        approved_Courses = [],
+        learning_paths = [],
+    }={}){
+        this.name = name,
+        this.age = age,
+        this.email = email,
+        this.instagram = instagram,
+        this.twitter = twitter,
+        this.facebook = facebook,
+        this.approved_Courses = approved_Courses
+
+        for(let value of learning_paths){
+            if (value instanceof Learning_Paths){
+                this.#learning_paths.push(value);
+            }
+        }
+    }
+    set learning_paths(new_path){
+        if (new_path instanceof Learning_Paths){
+            this.#learning_paths.push(new_path);
+        }
+    }
+    get learning_paths(){
+        return this.#learning_paths
+    }
+
+    //Este metodo no se puede acceder
+    #metodo_privado(){
+        console.log("esto es un metodo PRIVADO")
+    }
+    //Este metodo si se puede acceder
+    metodo_publico(){
+        console.log("esto es un metodo PUBLICO")
+    }
+
+
+}
+
+const fer = new Estudiante({
+    age:25,
+    name:'fer', 
+    email:'fer@testing.com',
+    learning_paths: [
+        datascience,
+        escuela_web,
+        {name:"testing for filter",courses:[]}
+        
+    ]
+});
